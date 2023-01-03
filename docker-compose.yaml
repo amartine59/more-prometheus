@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  mpromt:
+    build: .
+    container_name: mpromt
+    restart: always
+    ports:
+      - 2112:2112
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/:/etc/prometheus
+      - prometheus-data:/prometheus
+    ports:
+      - 9090:9090
+    restart: always
+    command: 
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--storage.tsdb.path=/prometheus'
+
+volumes:
+  prometheus-data:
